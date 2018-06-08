@@ -1,0 +1,26 @@
+Task:
+1.There is an array A[N] of N numbers. You have to compose an array Output[N]
+such that Output[i] will be equal to multiplication of all the elements of A[N] except A[i].
+For example Output[0] will be multiplication of A[1] to A[N-1] and Output[1]
+will be multiplication of A[0] and from A[2] to A[N-1].
+Solve it without division operator and in O(n)
+
+Ideas: No division, thus you can't multiple them all at once.
+
+entry:
+A   B   C   D
+BCD ACD ABD ABC
+
+The result for each result is a multiplication of all numbers on the left 
+and multiplication on the right.
+
+If we have extra space we
+can store them multiplication of all elements on the left for each element,
+using a trick that we can use the part which was already calculated, 
+making just one multiplication.
+
+Then do the same for elements on the right.
+
+
+!Need to handle the type of the temp value large enough to handle
+// overflow of the vqlue, when 2 large ints are multiplied.
