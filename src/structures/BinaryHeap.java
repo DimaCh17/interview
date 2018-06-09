@@ -84,7 +84,7 @@ public class BinaryHeap {
 				// check if the any of the children is bigger than the
 				// parent
 				// and switch 
-				candidate = Math.max(candidate, b)
+				//candidate = Math.max(candidate, b)
 			} else { // only left child exist
 			}
 			// update current pos
