@@ -39,117 +39,49 @@ TC2 - sequence starts with an element other than the first one.
 */
 
 public class ArithmeticProgression {
-    public boolean showOutput = false;
+    // DO NOT MODIFY THE LIST. IT IS READ ONLY
+    public int solve(final List<Integer> A) {
 
-    private void print(String format, Object ... args) {
-        if (!showOutput) return;
-        System.out.print(String.format(format, args));
-    }
-
-    private class Sequence {
-        public final int start; // index
-        public final int step; // step
-
-        private int dataIndex = 0;
-        private int[] data = new int[2];
-        private int count = 0;
-
-        public Sequence(int start, int next) {
-            this.start = start;
-            this.step = next - start;
-            data[0] = start;
-            data[1] = next;
-            dataIndex = 1;
-            count = 2;
+        int n = A.size();
+        if (n <= 2) {
+            return n; // this is good CC, we always have the sequence with 2 or less elements
         }
+        // of the same length
 
-        @Override
-        public int hashCode() {
-            return Objects.hash(start, step);
+        int set[] = new int[n];
+        for(int i = 0; i < n; i++) {
+            set[i] = A.get(i);
         }
-
-        @Override
-        public boolean equals(Object other) {
-            if (other == this) {
-                return true;
-            }
-            if (other == null) {
-                return false;
-            }
-            if (!(other instanceof Sequence)) {
-                return false;
-            }
-            Sequence sequence = (Sequence) other;
-            return start == sequence.start && step == sequence.step && count == sequence.count;
+        Arrays.sort(set);
+        int L[][] = new int[n][n];
+        int llap = 2;
+        for (int i = 0; i < n; i++) {
+            L[ i ][ n - 1 ] = 2;
         }
-
-        public void add(int val) {
-            if (val != next()) {
-                throw new RuntimeException();
-            }
-            data[(dataIndex + 1) % 2] = val;
-            dataIndex = (dataIndex + 1) % data.length;
-            count += 1;
-        }
-
-
-        public int next() {
-            return data[dataIndex] + step;
-        }
-
-    }
-
-    public int solve(final List<Integer> list) {
-        // we keep track of two last elements per sequence, along with the total count
-
-        // check existing sequences if they can be continued
-        //Map<Integer, List<Sequence>> sequenceBuckets = new HashMap<>(); // list of sequence hides one *N
-        Set<Integer> startSet = new HashSet <>();
-        // holds values for each value that will be be added to a sequence.
-        Map<Integer, Set<Sequence>> anticipationMap = new HashMap<>();
-        int maxLen = 0;
-        for (int i = 0; i < list.size(); i++) {
-            int val = list.get(i);
-            // use the anticipation sets here.
-            Set<Integer> stepsUsed = new HashSet <>();// once the value became a part of a sequence of this step
-            // it can't start a sequence with the same step from the start set.
-            Set<Sequence> anticipationSet = anticipationMap.getOrDefault(val, new HashSet <>());
-            List<Sequence> sequencesHit = new LinkedList <>();
-            for (Sequence sequence : anticipationSet) { // (LL) don't modify the collection while iterating it
-
-                sequence.add(val); // if the sequence lands in the same set we don't want to delete it
-                int nextVal = sequence.next();
-
-                Set<Sequence> nextSet = anticipationMap.getOrDefault(nextVal, new HashSet <>());
-                nextSet.add(sequence);
-
-                if (!anticipationSet.equals(nextSet)) {
-                    sequencesHit.add(sequence); // (LL) handle the situation when we hit the same bucket
-                    // in case of the same value, and step == 0
+        for (int j = n-2; j>= 1; j--)
+        {
+            int i = j - 1, k = j + 1;
+            while (i >= 0 && k <= n-1)
+            {
+                if (set[i] + set[k] < 2 * set[j]) {
+                    k++;
                 }
-
-                // the outcome completely
-                anticipationMap.put(nextVal, nextSet);
-                maxLen = Math.max(maxLen, sequence.count);
-                stepsUsed.add(sequence.step);
-            }
-            sequencesHit.forEach(s ->  anticipationSet.remove(s));
-            anticipationMap.put(val, anticipationSet);// remove the sequence from old
-
-
-            for (int start : startSet) {
-                //int step = val - start;
-                Sequence sequence = new Sequence(start, val);
-                if (!stepsUsed.contains(sequence.step)) {
-                    Set <Sequence> nextSet = anticipationMap.getOrDefault(sequence.next(), new HashSet <>());
-                    nextSet.add(sequence);
-                    anticipationMap.put(sequence.next(), nextSet);
-                    maxLen = Math.max(maxLen, sequence.count);
+                else if (set[i] + set[k] > 2 * set[j])
+                {
+                    L[i][j] = 2; i--;
+                } else {
+                    L[i][j] = L[j][k] + 1;
+                    llap = Math.max(llap, L[i][j]);
+                    i--; k++;
                 }
             }
-            startSet.add(val);
-            maxLen = Math.max(maxLen, 1);// LL - check CC
+            while (i >= 0)
+            {
+                L[i][j] = 2;
+                i--;
+            }
         }
-        return maxLen;
+        return llap;
     }
 }
+
