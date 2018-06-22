@@ -30,6 +30,7 @@ public class NDigitsTest {
     
     @Test
     public void test3long() {
-    	assertEquals(5, nd.solve(75, 22));
+    	assertEquals(478432066, nd.solve(75, 22));
     }
+
 }
