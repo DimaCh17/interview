@@ -37,8 +37,14 @@ public class Color3BoardTest {
     }
 
     @Test
-    public void solve2() {
+    public void solve87() {
         cb.showOutput = false;
         assertEquals(277700620, cb.solve(87));
+    }
+
+    @Test
+    public void solve2() {
+        cb.showOutput = false;
+        assertEquals(588, cb.solve(2));
     }
 }

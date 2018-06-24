@@ -48,6 +48,9 @@ public class Color3Board {
             int shift = 0;
             for (int i = 0; i < colors.length; i++) {
                 // we shift the mask, use the and operator to clea
+                if (colors[i] > 4) {
+                    throw new RuntimeException("Color is more than 4");
+                }
                 int maskedColor = colors[i] & mask;
                 maskedColor <<= shift;
                 colorData |= maskedColor;
@@ -67,7 +70,8 @@ public class Color3Board {
         public void setColor(int index, int color) {
             int mask = 0b111;
             int maskedColor = color & mask;
-            maskedColor <<= index * 3;;
+            maskedColor <<= index * 3;
+            colorData &= ~(mask << index * 3);
             colorData |= maskedColor;
         }
 
@@ -239,53 +243,48 @@ public class Color3Board {
     }
 
     public int solve(int n) {
-
-        // so there is no conflict with any of the existing colors
-        // then we find all exit states with 4 colors that go from
-        // this state, basically those are all we got. then put
-        // all of the states to the queue (or use recursion to walk them)
-        // through
-
-        // we go from left to right
-        // put all reasonable combinations to the queue.
-        // store a cache of transitions thus the same row
-        // needs to recalculations
-        int totalCount = 0;
-        Deque<Row> queue = new LinkedList<>();
-        Deque<Integer> levels = new LinkedList<>();
-        getAllStates().forEach( r -> {queue.addLast(r); levels.addLast(1);});
-        Set<Row> allStates = getAllStates();
-        Map<Row, Set<Row>> transMap = new HashMap<>();
-
-        while (!queue.isEmpty()) {
-            Row row = queue.removeFirst();
-            int level = levels.removeFirst();
-            if (level == n) {
-                //
-                totalCount++;
-                totalCount%=1000000007;
-                continue;// we reached the end (TERM1)
-            }
-            // ? backflow problem - how not to get to the same state where
-            // we have been before?
-            if (transMap.containsKey(row)) {
-                transMap.get(row).forEach(r -> {queue.addLast(r); levels.addLast(level + 1);}); // just keep counting
-            } else {
-                // need to figure out all transitions and add them to the map
-                // (?) and may be to the reverse map
-                allStates.stream().filter(r -> r.isNeighbor(row)).forEach(
-                    r -> {
-                        Set<Row> forwardSet = transMap.getOrDefault(r, new HashSet <>());
-                        transMap.put(r, forwardSet);
-                        Set<Row> reverseSet = transMap.getOrDefault(row, new HashSet <>());
-                        transMap.put(row, reverseSet);
-                        queue.addLast(r);
-                        levels.addLast(level + 1);
-                    });
-            }
-
-            // int nextMutate = mutateIndex + 1;
+        if (n == 0) {
+            return 0;
         }
-        return totalCount; // (??) How to we calculate correct mutations.
+        Set<Row> allStates = getAllStates();
+        if (n == 1) {
+            return allStates.size();
+        }
+        // calculate all transitions, as it will represent a single state.
+        Map<Row, Set<Row>> transMap = new HashMap<>();
+        allStates.forEach(r -> {
+            for (Row row : getTransitions(r)) {
+                Set<Row> forwardSet = transMap.getOrDefault(r, new HashSet <>());
+                transMap.put(r, forwardSet);
+                forwardSet.add(row);
+
+                Set<Row> reverseSet = transMap.getOrDefault(row, new HashSet <>());
+                transMap.put(row, reverseSet);
+                reverseSet.add(r);
+            }
+        });
+
+        // here we need to trace counts.
+        Map<Row, Integer> oldState = new HashMap<>();
+        for (Row state : allStates) {
+            oldState.put(state, 1);
+        }
+        for (int i = 1; i < n; i++) {
+            Map<Row, Integer> newState =  new HashMap<>();
+            allStates.forEach(r -> newState.put(r, 0));
+            for (Row key : allStates) {
+                for (Row transition : transMap.get(key)) {
+                    int newVal = (newState.get(key) + oldState.get(transition) ) % 1000000007;
+                    newState.put(key, newVal);
+                }
+            }
+            oldState = newState;
+        }
+        int count = 0;
+        for (Row key : oldState.keySet()) {
+            count += oldState.get(key);
+            count %= 1000000007;
+        }
+        return count;
     }
 }
