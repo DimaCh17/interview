@@ -38,6 +38,7 @@ public class ShortestCommonStringTest {
         assertEquals(45, scs.solve(ArrayUtils.create("cpsklryvmcp", "nbpbwllsrehfmx", "kecwitrsglre", "vtjmxypu")));
     }
 
+    @Test
     public void testLong2() {
         assertEquals(97, scs.solve(ArrayUtils.create(
             "qkourllircql", "smvtrmvjpr", "yagcifbarp", "lbjtunkgbfuw", "nlvyb", "tdqchahic", "xypbkkvywecd",

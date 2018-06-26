@@ -51,7 +51,7 @@ public class ShortestCommonString {
 
     private int go(String merged, int mask, ArrayList<String> words) {
         int idx = 0;
-        int res = 0;
+        int res = Integer.MAX_VALUE;
         if (mask == 0) {
             return merged.length();
         }
@@ -59,7 +59,9 @@ public class ShortestCommonString {
             int bitMask = 1 << idx;
             if ((bitMask & mask) != 0) {
                 String childMerged = mergeStrings(merged, words.get(idx));
-                res = Integer.max(res, go(childMerged, mask & (~bitMask), words));
+                int newMask = mask & (~bitMask);
+                res = Integer.min(res, go(childMerged, newMask, words)); // (LL) careful with min/max, they should
+                // have sense
             }
             idx++;
         }
@@ -87,17 +89,21 @@ public class ShortestCommonString {
             for (int i = 0; i < merge; i++) {
                 // tail merge
                 char bodyChar = body.charAt(body.length() - merge + i);
-                if (tailAttempt >= 0 && added.charAt(i) != bodyChar) {
-                    // this is not the merge
-                    tailAttempt = -1; // we stop attemping on this merge length
-                } else {
-                    tailAttempt = i + 1; // 0 - means no tail has been merged
-                    // i is 0 based
+                if (tailAttempt >= 0) { // (LL) mixing guard variable may require a lot of time to get out of it.
+                    if (added.charAt(i) != bodyChar) { // (GTB)
+                        // this is not the merge
+                        tailAttempt = -1; // we stop attemping on this merge length
+                    } else {
+                        tailAttempt = i + 1; // 0 - means no tail has been merged
+                        // i is 0 based
+                    }
                 }
-                if (headAttempt >= 0 && added.charAt(added.length() - merge + i) != body.charAt(i)) {
-                    headAttempt = -1;
-                } else {
-                    headAttempt = i + 1;
+                if (headAttempt >= 0) { // (GTB)
+                    if (added.charAt(added.length() - merge + i) != body.charAt(i)) {
+                        headAttempt = -1;
+                    } else {
+                        headAttempt = i + 1;
+                    }
                 }
             }
             tailMerge = Integer.max(tailMerge, tailAttempt);
