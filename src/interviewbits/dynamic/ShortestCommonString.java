@@ -40,84 +40,77 @@ import java.util.function.BiFunction;
 public class ShortestCommonString {
     public int solve(ArrayList<String> words) {
         Map<Character, Integer> minSet = new HashMap <>(); // (UEC)
-        TreeMap<Character, Integer> completeSet = new TreeMap <>(); // (UEC)+
-        for (String word : words) {
-            Map<Character, Integer> wordMap = new HashMap <>(); // (UEC)+
-            for (char ch : word.toCharArray()) {
-                wordMap.compute(ch, this::increaseMapCount);
-                completeSet.compute(ch, this::increaseMapCount); // Assuming null can be a previous value
-            }
-            wordMap.forEach((k, v) -> minSet.put(k, Math.max(minSet.getOrDefault(k, 0), v)));
+        int bitMask = 1;
+        int mask = 0;
+        for (int i = 0; i < words.size(); i++) {
+            mask |= bitMask;
+            bitMask <<= 1;
         }
-         // we remove items from the complete set, to keep only items are not processed
-        for (Character key : minSet.keySet()) {
-            int left = completeSet.get(key) - minSet.get(key);
-            if (left == 0) {
-                completeSet.remove(key);
-            } else {
-                completeSet.put(key, left);
+        return go("", mask, words);
+    }
+
+    private int go(String merged, int mask, ArrayList<String> words) {
+        int idx = 0;
+        int res = 0;
+        if (mask == 0) {
+            return merged.length();
+        }
+        while (idx < words.size()) {
+            int bitMask = 1 << idx;
+            if ((bitMask & mask) != 0) {
+                String childMerged = mergeStrings(merged, words.get(idx));
+                res = Integer.max(res, go(childMerged, mask & (~bitMask), words));
+            }
+            idx++;
+        }
+        return res;
+    }
+
+    public String mergeStrings(String merged, String other) {
+        if (merged.length() >= other.length()) {
+            if (merged.contains(other)) {
+                return merged;
+            }
+        } else {
+            if (other.contains(merged)) {
+                return other;
             }
         }
-        // (MAN) check prime factorizarion
-        List<Character> state = new LinkedList <>();
-        minSet.forEach((k, v) -> {
-            for (int i = 0; i < v; i++) {
-                state.add(k);
-            }
-        });
-        for (;;) {
-            state.sort(Character::compareTo);
-            StringBuilder sb = new StringBuilder();
-            state.forEach(c -> sb.append(c));
-            String snapshot = sb.toString();
-            Deque<String> dq = new LinkedList<>();
-            dq.addLast(snapshot);
-            Deque<Integer> mutateTank = new LinkedList<>();
-            mutateTank.addLast(0);
-            while (!(dq.isEmpty())) { // check permutation here
-                String cur = dq.removeFirst();
-                int mutation = mutateTank.removeFirst();
-                if (mutation < cur.length()) {
-                    print("%s\n", cur);
-                    if (found(cur, words)) {
-                        return cur.length(); // (TERM1)
-                    }
-                    // we are still within the string
-                    // process the current entry
-                    // basically, we (1) do (2) mutate
-                    for (int index = mutation; index < cur.length(); index++) {
-                        StringBuilder mutantBuilder = new StringBuilder(cur);
-                        char subject = mutantBuilder.charAt(index);
-                        mutantBuilder.deleteCharAt(index);
-                        mutantBuilder.insert(mutation, subject);
-                        dq.addLast(mutantBuilder.toString());
-                        mutateTank.addLast(mutation + 1);
-                    }
+        // seek from the head.
+        int headMerge = 0;
+        int tailMerge = 0;
+        String body = merged.length() >= other.length() ? merged : other;
+        String added = body.equals(merged) ? other : merged;
+        for (int merge = 1; merge <= added.length(); merge++) {
+            int tailAttempt = 0;
+            int headAttempt = 0;
+            for (int i = 0; i < merge; i++) {
+                // tail merge
+                char bodyChar = body.charAt(body.length() - merge + i);
+                if (tailAttempt >= 0 && added.charAt(i) != bodyChar) {
+                    // this is not the merge
+                    tailAttempt = -1; // we stop attemping on this merge length
+                } else {
+                    tailAttempt = i + 1; // 0 - means no tail has been merged
+                    // i is 0 based
+                }
+                if (headAttempt >= 0 && added.charAt(added.length() - merge + i) != body.charAt(i)) {
+                    headAttempt = -1;
+                } else {
+                    headAttempt = i + 1;
                 }
             }
-            char firstChar = completeSet.firstKey();
-            int newCharCount = completeSet.firstEntry().getValue() - 1;
-            if (newCharCount == 0) {
-                completeSet.pollFirstEntry();
-            } else {
-                completeSet.put(firstChar, newCharCount);
-            }
-            state.add(firstChar);
+            tailMerge = Integer.max(tailMerge, tailAttempt);
+            headMerge = Integer.max(headMerge, headAttempt);
         }
-        //throw new IllegalStateException("This state should not be entered");
-    }
-
-    private boolean found(String cur, ArrayList<String> words) {
-        for (String word : words) {
-            if (!cur.contains(word)) {
-                return false;
-            }
+        if (headMerge == 0 && tailMerge == 0) {
+            return body + added;
         }
-        return true;
-    }
-
-    private int increaseMapCount(Character key, Integer count) {
-        return count != null ? count + 1 : 1;
+        if (headMerge > tailMerge) {
+            return added.substring(0, headMerge) + body;
+        } else {
+            return body + added.substring(tailMerge);
+        }
     }
 
     public boolean showOutput = false;
