@@ -46,7 +46,41 @@ public class ShortestCommonString {
             mask |= bitMask;
             bitMask <<= 1;
         }
-        return go("", mask, words);
+        return go2("", mask, words).length();
+    }
+
+    public String solve2(ArrayList<String> words) {
+        Map<Character, Integer> minSet = new HashMap <>(); // (UEC)
+        int bitMask = 1;
+        int mask = 0;
+        for (int i = 0; i < words.size(); i++) {
+            mask |= bitMask;
+            bitMask <<= 1;
+        }
+        return go2("", mask, words);
+    }
+
+    private String go2(String merged, int mask, ArrayList<String> words) {
+        int idx = 0;
+        String res = "";
+        if (mask == 0) {
+            return merged;
+        }
+        while (idx < words.size()) {
+            int bitMask = 1 << idx;
+            if ((bitMask & mask) != 0) {
+                String childMerged = mergeStrings(merged, words.get(idx));
+                int newMask = mask & (~bitMask);
+                String newRes = go2(childMerged, newMask, words);
+                if (res.length() == 0 || newRes.length() < res.length()) {
+                    res = newRes;
+                }
+
+                // have sense
+            }
+            idx++;
+        }
+        return res;
     }
 
     private int go(String merged, int mask, ArrayList<String> words) {

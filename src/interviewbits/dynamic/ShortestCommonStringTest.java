@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.*;
 
 public class ShortestCommonStringTest {
@@ -44,6 +46,18 @@ public class ShortestCommonStringTest {
             "qkourllircql", "smvtrmvjpr", "yagcifbarp", "lbjtunkgbfuw", "nlvyb", "tdqchahic", "xypbkkvywecd",
                 "ydonbnqpjtjlbj", "jnajop", "aagbamddoe")));
     }
+
+    @Test
+    public void testLong2Solve2() {
+        ArrayList<String> parts = ArrayUtils.create("qkourllircql", "smvtrmvjpr", "yagcifbarp", "lbjtunkgbfuw", "nlvyb",
+                "tdqchahic", "xypbkkvywecd", "ydonbnqpjtjlbj", "jnajop", "aagbamddoe");
+        String merged = scs.solve2(parts);
+        for (String part : parts) {
+            assertTrue(String.format("'%s' has no '%s'", merged, part), merged.contains(part));
+        }
+        assertEquals("", merged);
+    }
+
     @Test
     public void mergeIn() {
         // it's more than min amount of char needed
