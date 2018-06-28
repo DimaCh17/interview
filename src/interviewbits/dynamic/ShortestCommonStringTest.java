@@ -6,6 +6,8 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringJoiner;
 
 import static org.junit.Assert.*;
 
@@ -51,12 +53,29 @@ public class ShortestCommonStringTest {
     public void testLong2Solve2() {
         ArrayList<String> parts = ArrayUtils.create("qkourllircql", "smvtrmvjpr", "yagcifbarp", "lbjtunkgbfuw", "nlvyb",
                 "tdqchahic", "xypbkkvywecd", "ydonbnqpjtjlbj", "jnajop", "aagbamddoe");
+        scs.showOutput = true;
         String merged = scs.solve2(parts);
+        ArrayList<String> missed = new ArrayList <>();
+
         for (String part : parts) {
-            assertTrue(String.format("'%s' has no '%s'", merged, part), merged.contains(part));
+            if (!merged.contains(part)) {
+                missed.add(part);
+            }
         }
+        StringJoiner sj = new StringJoiner(",");
         assertEquals("", merged);
+        missed.stream().forEach(s -> sj.add(s));
+        assertTrue(sj.toString(), missed.isEmpty());
     }
+
+    @Test
+    public void mergeLong2() {
+        // it's more than min amount of char needed
+        String merged = scs.mergeStrings("qkourllircqlsmvtrmvjpryagcifbarplbjtunkgbfuwnlvybtdqchahicxypbkkvywecd", "ydonbnqpjtjlbj");
+        assertTrue(merged.contains("ydonbnqpjtjlbj"));
+
+    }
+
 
     @Test
     public void mergeIn() {

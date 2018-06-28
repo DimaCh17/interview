@@ -39,17 +39,22 @@ import java.util.function.BiFunction;
 
 public class ShortestCommonString {
     public int solve(ArrayList<String> words) {
-        Map<Character, Integer> minSet = new HashMap <>(); // (UEC)
         int bitMask = 1;
         int mask = 0;
         for (int i = 0; i < words.size(); i++) {
             mask |= bitMask;
             bitMask <<= 1;
         }
+        initCache(mask + 1);
         return go2("", mask, words).length();
     }
 
+    private void initCache(int size) {
+        cache = new String[size];
+    }
+
     public String solve2(ArrayList<String> words) {
+
         Map<Character, Integer> minSet = new HashMap <>(); // (UEC)
         int bitMask = 1;
         int mask = 0;
@@ -57,48 +62,39 @@ public class ShortestCommonString {
             mask |= bitMask;
             bitMask <<= 1;
         }
+        initCache(mask + 1);
+
         return go2("", mask, words);
     }
 
+    private String[] cache;
     private String go2(String merged, int mask, ArrayList<String> words) {
+
         int idx = 0;
         String res = "";
         if (mask == 0) {
             return merged;
         }
+        if (cache[mask] != null) {
+            return cache[mask];
+        }
         while (idx < words.size()) {
             int bitMask = 1 << idx;
             if ((bitMask & mask) != 0) {
-                String childMerged = mergeStrings(merged, words.get(idx));
+                String mixWord = words.get(idx);
+                //print("%s + %s\n", mixWord, merged);
+                String childMerged = mergeStrings(merged, mixWord);
                 int newMask = mask & (~bitMask);
                 String newRes = go2(childMerged, newMask, words);
                 if (res.length() == 0 || newRes.length() < res.length()) {
                     res = newRes;
+                    //System.out.println(res);
                 }
-
-                // have sense
             }
             idx++;
         }
-        return res;
-    }
-
-    private int go(String merged, int mask, ArrayList<String> words) {
-        int idx = 0;
-        int res = Integer.MAX_VALUE;
-        if (mask == 0) {
-            return merged.length();
-        }
-        while (idx < words.size()) {
-            int bitMask = 1 << idx;
-            if ((bitMask & mask) != 0) {
-                String childMerged = mergeStrings(merged, words.get(idx));
-                int newMask = mask & (~bitMask);
-                res = Integer.min(res, go(childMerged, newMask, words)); // (LL) careful with min/max, they should
-                // have sense
-            }
-            idx++;
-        }
+        cache[mask] = res;
+        print("%16s: %s\n", Integer.toBinaryString(mask), res);
         return res;
     }
 
