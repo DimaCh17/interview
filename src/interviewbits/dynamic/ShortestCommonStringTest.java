@@ -33,6 +33,7 @@ public class ShortestCommonStringTest {
     @Test
     public void test3() {
         // it's more than min amount of char needed
+        assertEquals("abcba", scs.solve2(ArrayUtils.create("abc", "bcb", "ba")));
         assertEquals(5, scs.solve(ArrayUtils.create("abc", "bcb", "ba")));
     }
 
@@ -42,6 +43,7 @@ public class ShortestCommonStringTest {
         assertEquals(45, scs.solve(ArrayUtils.create("cpsklryvmcp", "nbpbwllsrehfmx", "kecwitrsglre", "vtjmxypu")));
     }
 
+    @Ignore
     @Test
     public void testLong2() {
         assertEquals(97, scs.solve(ArrayUtils.create(
@@ -49,6 +51,7 @@ public class ShortestCommonStringTest {
                 "ydonbnqpjtjlbj", "jnajop", "aagbamddoe")));
     }
 
+    @Ignore
     @Test
     public void testLong2Solve2() {
         ArrayList<String> parts = ArrayUtils.create("qkourllircql", "smvtrmvjpr", "yagcifbarp", "lbjtunkgbfuw", "nlvyb",
@@ -63,9 +66,10 @@ public class ShortestCommonStringTest {
             }
         }
         StringJoiner sj = new StringJoiner(",");
-        assertEquals("", merged);
+
         missed.stream().forEach(s -> sj.add(s));
         assertTrue(sj.toString(), missed.isEmpty());
+        assertEquals("", merged);
     }
 
     @Test

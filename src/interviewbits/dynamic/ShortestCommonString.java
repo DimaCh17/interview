@@ -46,7 +46,7 @@ public class ShortestCommonString {
             bitMask <<= 1;
         }
         initCache(mask + 1);
-        return go2("", mask, words).length();
+        return go2("", mask, words, 0).length();
     }
 
     private void initCache(int size) {
@@ -64,11 +64,11 @@ public class ShortestCommonString {
         }
         initCache(mask + 1);
 
-        return go2("", mask, words);
+        return go2("", mask, words, 0);
     }
 
     private String[] cache;
-    private String go2(String merged, int mask, ArrayList<String> words) {
+    private String go2(String merged, int mask, ArrayList<String> words, int right) {
 
         int idx = 0;
         String res = "";
@@ -76,16 +76,30 @@ public class ShortestCommonString {
             return merged;
         }
         if (cache[mask] != null) {
-            return cache[mask];
+
+            //return cache[mask];
         }
         while (idx < words.size()) {
             int bitMask = 1 << idx;
             if ((bitMask & mask) != 0) {
                 String mixWord = words.get(idx);
-                //print("%s + %s\n", mixWord, merged);
-                String childMerged = mergeStrings(merged, mixWord);
+                if (mixWord.equals("ydonbnqpjtjlbj")) {
+                //if (mixWord.equals("ydonbnqpjtjlbj")) {
+                    //printState(mask, merged, mixWord, "");
+                }
+                String child1 = mergeStrings(merged, mixWord);
+                String child2 = mergeStrings(mixWord, merged);
                 int newMask = mask & (~bitMask);
-                String newRes = go2(childMerged, newMask, words);
+                String res1 = go2(child1, newMask, words, 0);
+                String newRes = res1;
+                if (!child1.equals(child2)) {
+                    String res2 = go2(child2, newMask, words, 1);
+                    newRes = res1.length() <= res2.length() ? res1 : res2;
+                }
+                // we loose result below, as mixing other words will give different results
+                // for the same parent words
+                // we can merge only top level results, when
+                // ?? can we merge results here and how exactly
                 if (res.length() == 0 || newRes.length() < res.length()) {
                     res = newRes;
                     //System.out.println(res);
@@ -93,9 +107,17 @@ public class ShortestCommonString {
             }
             idx++;
         }
+        if (cache[mask] != null && cache[mask] != res) {
+            //print("%16s: %s -> %s \n", Integer.toBinaryString(mask), cache[mask], res);
+        }
         cache[mask] = res;
-        print("%16s: %s\n", Integer.toBinaryString(mask), res);
+        //print("%16s: %s\n", Integer.toBinaryString(mask), res);
         return res;
+    }
+
+    private void printState(int mask, String merged, String mixWord, String res) {
+        print("%16s: (%d)%s + %s = (%d)%s\n", Integer.toBinaryString(mask), merged.length(),
+                merged, mixWord, res.length(), res);
     }
 
     public String mergeStrings(String merged, String other) {
@@ -109,13 +131,16 @@ public class ShortestCommonString {
             }
         }
         // seek from the head.
-        int headMerge = 0;
+        //int headMerge = 0;
         int tailMerge = 0;
-        String body = merged.length() >= other.length() ? merged : other;
-        String added = body.equals(merged) ? other : merged;
-        for (int merge = 1; merge <= added.length(); merge++) {
+        String body = merged;
+        //String body = merged.length() >= other.length() ? merged : other;
+        //String added = body.equals(merged) ? other : merged;
+        String added = other;
+        for (int merge = 1; merge <= Integer.min(added.length(), merged.length()); merge++) {
+        //for (int merge = 1; merge <= added.length(); merge++) {
             int tailAttempt = 0;
-            int headAttempt = 0;
+            //int headAttempt = 0;
             for (int i = 0; i < merge; i++) {
                 // tail merge
                 char bodyChar = body.charAt(body.length() - merge + i);
@@ -128,25 +153,24 @@ public class ShortestCommonString {
                         // i is 0 based
                     }
                 }
+                /*
                 if (headAttempt >= 0) { // (GTB)
                     if (added.charAt(added.length() - merge + i) != body.charAt(i)) {
                         headAttempt = -1;
                     } else {
                         headAttempt = i + 1;
                     }
-                }
+                }*/
             }
             tailMerge = Integer.max(tailMerge, tailAttempt);
-            headMerge = Integer.max(headMerge, headAttempt);
+            //headMerge = Integer.max(headMerge, headAttempt);
         }
+        /*
         if (headMerge == 0 && tailMerge == 0) {
             return body + added;
-        }
-        if (headMerge > tailMerge) {
-            return added.substring(0, headMerge) + body;
-        } else {
-            return body + added.substring(tailMerge);
-        }
+        }*/
+
+        return body + added.substring(tailMerge);
     }
 
     public boolean showOutput = false;
