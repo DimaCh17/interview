@@ -75,36 +75,27 @@ public class ShortestCommonString {
         if (mask == 0) {
             return merged;
         }
-        if (cache[mask][right] != null) {
-            return cache[mask][right];
-        }
         while (idx < words.size()) {
             int bitMask = 1 << idx;
             if ((bitMask & mask) != 0) {
-                String mixWord = words.get(idx);
-                if (mixWord.equals("ydonbnqpjtjlbj")) {
-                //if (mixWord.equals("ydonbnqpjtjlbj")) {
-                    //printState(mask, merged, mixWord, "");
-                }
-                String child1 = mergeStrings(merged, mixWord);
-
-                String child2 = mergeStrings(mixWord, merged);
+                String res1 = cache[mask][0];
                 int newMask = mask & (~bitMask);
-                String res1 = go2(child1, newMask, words, 0);
-                cache[mask][0] = res1;
-                String newRes = res1;
-                if (!child1.equals(child2)) {
-                    String res2 = go2(child2, newMask, words, 1);
-                    cache[mask][1] = res2;
-                    newRes = res1.length() <= res2.length() ? res1 : res2;
+                if (res1 == null) {
+                    String child1 = mergeStrings(merged, words.get(idx));
+                    res1 = go2(child1, newMask, words, 0);
+                    cache[mask][0] = res1;
                 }
-                // we loose result below, as mixing other words will give different results
-                // for the same parent words
-                // we can merge only top level results, when
-                // ?? can we merge results here and how exactly
+
+                String res2 = cache[mask][1];
+                if (res2 == null) {
+                    String child2 = mergeStrings(words.get(idx), merged);
+                    res2 = go2(child2, newMask, words, 1);
+                    cache[mask][1] = res2;
+                }
+                
+                String newRes = res1.length() <= res2.length() ? res1 : res2;
                 if (res.length() == 0 || newRes.length() < res.length()) {
                     res = newRes;
-                    //System.out.println(res);
                 }
             }
             idx++;

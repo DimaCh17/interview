@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="1d8f810f-f55d-4e57-ac8a-420d95d62051" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/src/interviewbits/dynamic/ShortestCommonString.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interviewbits/dynamic/ShortestCommonString.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/interviewbits/dynamic/ShortestCommonStringTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/interviewbits/dynamic/ShortestCommonStringTest.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,8 +35,8 @@
       <file leaf-file-name="ShortestCommonString.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/interviewbits/dynamic/ShortestCommonString.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="153" column="60" selection-start-line="153" selection-start-column="60" selection-end-line="153" selection-end-column="60" />
+            <state relative-caret-position="301">
+              <caret line="94" column="16" lean-forward="true" selection-start-line="94" selection-start-column="16" selection-end-line="94" selection-end-column="16" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1614#1615#0" expanded="true" />
@@ -457,21 +458,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ShortestCommonStringTest_test3 - 2018.06.28 at 17h 18m 23s.xml">
-      <configuration name="ShortestCommonStringTest.test3" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ShortestCommonStringTest - 2018.06.28 at 17h 18m 28s.xml">
-      <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ShortestCommonStringTest - 2018.06.28 at 17h 19m 52s.xml">
-      <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ShortestCommonStringTest - 2018.06.28 at 17h 21m 05s.xml">
-      <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ShortestCommonStringTest - 2018.06.28 at 17h 23m 15s.xml">
-      <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="ShortestCommonStringTest_testLong2 - 2018.06.28 at 17h 23m 22s.xml">
       <configuration name="ShortestCommonStringTest.testLong2" configurationId="JUnit" />
     </history-entry>
@@ -485,6 +471,21 @@
       <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
     </history-entry>
     <history-entry file="ShortestCommonStringTest - 2018.06.28 at 17h 46m 18s.xml">
+      <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ShortestCommonStringTest - 2018.06.28 at 17h 48m 40s.xml">
+      <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ShortestCommonStringTest - 2018.06.28 at 17h 54m 05s.xml">
+      <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ShortestCommonStringTest - 2018.06.28 at 17h 59m 11s.xml">
+      <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ShortestCommonStringTest - 2018.06.28 at 18h 01m 42s.xml">
+      <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ShortestCommonStringTest - 2018.06.28 at 18h 07m 51s.xml">
       <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
     </history-entry>
   </component>
@@ -962,8 +963,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/interviewbits/dynamic/ShortestCommonString.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="153" column="60" selection-start-line="153" selection-start-column="60" selection-end-line="153" selection-end-column="60" />
+        <state relative-caret-position="301">
+          <caret line="94" column="16" lean-forward="true" selection-start-line="94" selection-start-column="16" selection-end-line="94" selection-end-column="16" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1614#1615#0" expanded="true" />

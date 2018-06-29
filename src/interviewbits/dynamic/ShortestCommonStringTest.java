@@ -67,7 +67,7 @@ public class ShortestCommonStringTest {
 
         missed.stream().forEach(s -> sj.add(s));
         assertTrue(sj.toString(), missed.isEmpty());
-        assertEquals("", merged);
+        assertEquals("qkourllircqlsmvtrmvjpryagcifbarplbjtunkgbfuwnlvybtdqchahicxypbkkvywecdydonbnqpjtjlbjnajopaagbamddoe", merged);
     }
 
     @Test
