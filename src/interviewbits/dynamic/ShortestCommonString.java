@@ -150,23 +150,9 @@ public class ShortestCommonString {
                         // i is 0 based
                     }
                 }
-                /*
-                if (headAttempt >= 0) { // (GTB)
-                    if (added.charAt(added.length() - merge + i) != body.charAt(i)) {
-                        headAttempt = -1;
-                    } else {
-                        headAttempt = i + 1;
-                    }
-                }*/
             }
             tailMerge = Integer.max(tailMerge, tailAttempt);
-            //headMerge = Integer.max(headMerge, headAttempt);
         }
-        /*
-        if (headMerge == 0 && tailMerge == 0) {
-            return body + added;
-        }*/
-
         return body + added.substring(tailMerge);
     }
 
