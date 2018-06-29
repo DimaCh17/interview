@@ -50,7 +50,7 @@ public class ShortestCommonString {
     }
 
     private void initCache(int size) {
-        cache = new String[size];
+        cache = new String[size][2];
     }
 
     public String solve2(ArrayList<String> words) {
@@ -67,7 +67,7 @@ public class ShortestCommonString {
         return go2("", mask, words, 0);
     }
 
-    private String[] cache;
+    private String[][] cache;
     private String go2(String merged, int mask, ArrayList<String> words, int right) {
 
         int idx = 0;
@@ -75,9 +75,8 @@ public class ShortestCommonString {
         if (mask == 0) {
             return merged;
         }
-        if (cache[mask] != null) {
-
-            //return cache[mask];
+        if (cache[mask][right] != null) {
+            return cache[mask][right];
         }
         while (idx < words.size()) {
             int bitMask = 1 << idx;
@@ -88,12 +87,15 @@ public class ShortestCommonString {
                     //printState(mask, merged, mixWord, "");
                 }
                 String child1 = mergeStrings(merged, mixWord);
+
                 String child2 = mergeStrings(mixWord, merged);
                 int newMask = mask & (~bitMask);
                 String res1 = go2(child1, newMask, words, 0);
+                cache[mask][0] = res1;
                 String newRes = res1;
                 if (!child1.equals(child2)) {
                     String res2 = go2(child2, newMask, words, 1);
+                    cache[mask][1] = res2;
                     newRes = res1.length() <= res2.length() ? res1 : res2;
                 }
                 // we loose result below, as mixing other words will give different results
@@ -107,11 +109,6 @@ public class ShortestCommonString {
             }
             idx++;
         }
-        if (cache[mask] != null && cache[mask] != res) {
-            //print("%16s: %s -> %s \n", Integer.toBinaryString(mask), cache[mask], res);
-        }
-        cache[mask] = res;
-        //print("%16s: %s\n", Integer.toBinaryString(mask), res);
         return res;
     }
 
