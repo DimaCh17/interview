@@ -35,8 +35,8 @@
       <file leaf-file-name="ShortestCommonString.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/interviewbits/dynamic/ShortestCommonString.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="301">
-              <caret line="94" column="16" lean-forward="true" selection-start-line="94" selection-start-column="16" selection-end-line="94" selection-end-column="16" />
+            <state relative-caret-position="137">
+              <caret line="59" selection-start-line="59" selection-end-line="59" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#1614#1615#0" expanded="true" />
@@ -67,8 +67,8 @@
       <file leaf-file-name="ShortestCommonStringTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/interviewbits/dynamic/ShortestCommonStringTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="47" column="32" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
+            <state relative-caret-position="242">
+              <caret line="61" column="32" lean-forward="true" selection-start-line="61" selection-start-column="32" selection-end-line="61" selection-end-column="32" />
               <folding>
                 <element signature="e#363#364#0" expanded="true" />
                 <element signature="e#452#453#0" expanded="true" />
@@ -183,8 +183,8 @@
     </enabled-run-configurations>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="44" />
-    <option name="y" value="53" />
+    <option name="x" value="52" />
+    <option name="y" value="309" />
     <option name="width" value="1440" />
     <option name="height" value="812" />
   </component>
@@ -267,7 +267,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.ShortestCommonStringTest">
+  <component name="RunManager" selected="JUnit.ShortestCommonStringTest.solve2_39">
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
@@ -317,7 +317,7 @@
       </option>
       <patterns />
     </configuration>
-    <configuration name="ShortestCommonStringTest.mergeLong2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ShortestCommonStringTest.solve2_39" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="interview" />
       <extension name="coverage">
         <pattern>
@@ -329,7 +329,7 @@
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="interviewbits.dynamic" />
       <option name="MAIN_CLASS_NAME" value="interviewbits.dynamic.ShortestCommonStringTest" />
-      <option name="METHOD_NAME" value="mergeLong2" />
+      <option name="METHOD_NAME" value="solve2_39" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
@@ -363,6 +363,29 @@
       </option>
       <patterns />
     </configuration>
+    <configuration name="ShortestCommonStringTest.test39" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="interview" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="interviewbits.dynamic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="interviewbits.dynamic" />
+      <option name="MAIN_CLASS_NAME" value="interviewbits.dynamic.ShortestCommonStringTest" />
+      <option name="METHOD_NAME" value="test39" />
+      <option name="TEST_OBJECT" value="method" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <patterns />
+    </configuration>
     <configuration name="ShortestCommonStringTest.testLong2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="interview" />
       <extension name="coverage">
@@ -376,29 +399,6 @@
       <option name="PACKAGE_NAME" value="interviewbits.dynamic" />
       <option name="MAIN_CLASS_NAME" value="interviewbits.dynamic.ShortestCommonStringTest" />
       <option name="METHOD_NAME" value="testLong2" />
-      <option name="TEST_OBJECT" value="method" />
-      <option name="VM_PARAMETERS" value="-ea" />
-      <option name="PARAMETERS" />
-      <option name="WORKING_DIRECTORY" value="%MODULE_WORKING_DIR%" />
-      <option name="PASS_PARENT_ENVS" value="true" />
-      <option name="TEST_SEARCH_SCOPE">
-        <value defaultName="singleModule" />
-      </option>
-      <patterns />
-    </configuration>
-    <configuration name="ShortestCommonStringTest.testLong2Solve2" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="interview" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="interviewbits.dynamic.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <option name="PACKAGE_NAME" value="interviewbits.dynamic" />
-      <option name="MAIN_CLASS_NAME" value="interviewbits.dynamic.ShortestCommonStringTest" />
-      <option name="METHOD_NAME" value="testLong2Solve2" />
       <option name="TEST_OBJECT" value="method" />
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" />
@@ -433,17 +433,17 @@
       <item itemvalue="JUnit.ArithmeticProgressionTest.cc2" />
       <item itemvalue="JUnit.ShortestCommonStringTest" />
       <item itemvalue="JUnit.ShortestCommonStringTest.testLong2" />
-      <item itemvalue="JUnit.ShortestCommonStringTest.testLong2Solve2" />
-      <item itemvalue="JUnit.ShortestCommonStringTest.mergeLong2" />
       <item itemvalue="JUnit.ShortestCommonStringTest.test3" />
+      <item itemvalue="JUnit.ShortestCommonStringTest.test39" />
+      <item itemvalue="JUnit.ShortestCommonStringTest.solve2_39" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ShortestCommonStringTest.solve2_39" />
+        <item itemvalue="JUnit.ShortestCommonStringTest.test39" />
         <item itemvalue="JUnit.ShortestCommonStringTest" />
         <item itemvalue="JUnit.ShortestCommonStringTest.testLong2" />
         <item itemvalue="JUnit.ShortestCommonStringTest.test3" />
-        <item itemvalue="JUnit.ShortestCommonStringTest.testLong2Solve2" />
-        <item itemvalue="JUnit.ShortestCommonStringTest.mergeLong2" />
       </list>
     </recent_temporary>
   </component>
@@ -458,15 +458,6 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ShortestCommonStringTest_testLong2 - 2018.06.28 at 17h 23m 22s.xml">
-      <configuration name="ShortestCommonStringTest.testLong2" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ShortestCommonStringTest_testLong2 - 2018.06.28 at 17h 45m 32s.xml">
-      <configuration name="ShortestCommonStringTest.testLong2" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="ShortestCommonStringTest - 2018.06.28 at 17h 45m 40s.xml">
-      <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="ShortestCommonStringTest - 2018.06.28 at 17h 45m 53s.xml">
       <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
     </history-entry>
@@ -488,6 +479,15 @@
     <history-entry file="ShortestCommonStringTest - 2018.06.28 at 18h 07m 51s.xml">
       <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="ShortestCommonStringTest - 2018.06.28 at 18h 10m 53s.xml">
+      <configuration name="ShortestCommonStringTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ShortestCommonStringTest_test39 - 2018.06.28 at 18h 21m 26s.xml">
+      <configuration name="ShortestCommonStringTest.test39" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="ShortestCommonStringTest_solve2_39 - 2018.06.28 at 18h 21m 42s.xml">
+      <configuration name="ShortestCommonStringTest.solve2_39" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -499,18 +499,18 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="44" y="53" width="1440" height="812" extended-state="0" />
+    <frame x="52" y="309" width="1440" height="812" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" sideWeight="0.49930555" weight="0.3292683" />
-      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.49930555" weight="0.3292683" />
+      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.49861112" weight="0.3292683" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.4173611" side_tool="true" visible="true" weight="0.37533876" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5013889" side_tool="true" visible="true" weight="0.37533876" />
       <window_info anchor="right" id="Maven Projects" order="3" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.58263886" visible="true" weight="0.37533876" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.58263886" weight="0.37533876" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49930555" weight="0.20731707" />
       <window_info id="Capture Tool" order="2" />
@@ -952,8 +952,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/interviewbits/dynamic/ShortestCommonStringTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="47" column="32" selection-start-line="47" selection-start-column="32" selection-end-line="47" selection-end-column="32" />
+        <state relative-caret-position="242">
+          <caret line="61" column="32" lean-forward="true" selection-start-line="61" selection-start-column="32" selection-end-line="61" selection-end-column="32" />
           <folding>
             <element signature="e#363#364#0" expanded="true" />
             <element signature="e#452#453#0" expanded="true" />
@@ -963,8 +963,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/interviewbits/dynamic/ShortestCommonString.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="94" column="16" lean-forward="true" selection-start-line="94" selection-start-column="16" selection-end-line="94" selection-end-column="16" />
+        <state relative-caret-position="137">
+          <caret line="59" selection-start-line="59" selection-end-line="59" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#1614#1615#0" expanded="true" />

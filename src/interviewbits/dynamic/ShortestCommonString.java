@@ -38,118 +38,62 @@ import java.util.*;
 import java.util.function.BiFunction;
 
 public class ShortestCommonString {
-    public int solve(ArrayList<String> words) {
-        int bitMask = 1;
-        int mask = 0;
-        for (int i = 0; i < words.size(); i++) {
-            mask |= bitMask;
-            bitMask <<= 1;
-        }
-        initCache(mask + 1);
-        return go2("", mask, words, 0).length();
-    }
+	
+    
+	  public int solve(ArrayList<String> listStr) {
+	        if (listStr == null) return 0;
+	        int n = listStr.size();
+	        if (n == 0) return 0;
+	        String[] arrStr = listStr.toArray(new String[n]);
+	        
+	        int len = n;
+	        while (len > 1) {
+	            int overlapMax = 0;
+	            int I = 0, J = 0;
+	            String resStr = "";
+	            for (int i = 0; i < len; i++) {
+	                for (int j = i + 1; j < len; j++) {
+	                    String curStr = findOverlap(arrStr[i], arrStr[j]);
+	                    int overlapCur = - curStr.length() + arrStr[i].length() + arrStr[j].length();
+	                    //System.out.println(i + " " + j + " " + curStr);
+	                    if (overlapMax < overlapCur) {
+	                        overlapMax = overlapCur;
+	                        resStr = curStr;
+	                        I = i;
+	                        J = j;
+	                    }
+	                }
+	            }
+	            --len;
+	            if (overlapMax == 0) {
+	                arrStr[0] += arrStr[len];
+	            } else {
+	                arrStr[I] = resStr;
+	                arrStr[J] = arrStr[len];
+	            }
+	        }
+	        return arrStr[0].length();
+	    }
+	  
+	    private String findOverlap(String a, String b) {
+	        int la = a.length();
+	        int lb = b.length();
+	        String res = a + b;
+	        for (int k = 1; k <= la; k++) {
+	            if (k > lb) break;
+	            if (b.endsWith(a.substring(0, k))) {
+	                res = b + a.substring(k);
+	            }
+	        }
+	        for (int k = 1; k <= lb; k++) {
+	            if (k > la) break;
+	            if (a.endsWith(b.substring(0, k))) {
+	                String tmpRes = a + b.substring(k);
+	                if (res.length() > tmpRes.length())
+	                    res = tmpRes;
+	            }
+	        }
+	        return res;
+	    }
+	}
 
-    private void initCache(int size) {
-        cache = new String[size][2];
-    }
-
-    public String solve2(ArrayList<String> words) {
-
-        Map<Character, Integer> minSet = new HashMap <>(); // (UEC)
-        int bitMask = 1;
-        int mask = 0;
-        for (int i = 0; i < words.size(); i++) {
-            mask |= bitMask;
-            bitMask <<= 1;
-        }
-        initCache(mask + 1);
-
-        return go2("", mask, words, 0);
-    }
-
-    private String[][] cache;
-    private String go2(String merged, int mask, ArrayList<String> words, int right) {
-
-        int idx = 0;
-        String res = "";
-        if (mask == 0) {
-            return merged;
-        }
-        while (idx < words.size()) {
-            int bitMask = 1 << idx;
-            if ((bitMask & mask) != 0) {
-                String res1 = cache[mask][0];
-                int newMask = mask & (~bitMask);
-                if (res1 == null) {
-                    String child1 = mergeStrings(merged, words.get(idx));
-                    res1 = go2(child1, newMask, words, 0);
-                    cache[mask][0] = res1;
-                }
-
-                String res2 = cache[mask][1];
-                if (res2 == null) {
-                    String child2 = mergeStrings(words.get(idx), merged);
-                    res2 = go2(child2, newMask, words, 1);
-                    cache[mask][1] = res2;
-                }
-                
-                String newRes = res1.length() <= res2.length() ? res1 : res2;
-                if (res.length() == 0 || newRes.length() < res.length()) {
-                    res = newRes;
-                }
-            }
-            idx++;
-        }
-        return res;
-    }
-
-    private void printState(int mask, String merged, String mixWord, String res) {
-        print("%16s: (%d)%s + %s = (%d)%s\n", Integer.toBinaryString(mask), merged.length(),
-                merged, mixWord, res.length(), res);
-    }
-
-    public String mergeStrings(String merged, String other) {
-        if (merged.length() >= other.length()) {
-            if (merged.contains(other)) {
-                return merged;
-            }
-        } else {
-            if (other.contains(merged)) {
-                return other;
-            }
-        }
-        // seek from the head.
-        //int headMerge = 0;
-        int tailMerge = 0;
-        String body = merged;
-        //String body = merged.length() >= other.length() ? merged : other;
-        //String added = body.equals(merged) ? other : merged;
-        String added = other;
-        for (int merge = 1; merge <= Integer.min(added.length(), merged.length()); merge++) {
-        //for (int merge = 1; merge <= added.length(); merge++) {
-            int tailAttempt = 0;
-            //int headAttempt = 0;
-            for (int i = 0; i < merge; i++) {
-                // tail merge
-                char bodyChar = body.charAt(body.length() - merge + i);
-                if (tailAttempt >= 0) { // (LL) mixing guard variable may require a lot of time to get out of it.
-                    if (added.charAt(i) != bodyChar) { // (GTB)
-                        // this is not the merge
-                        tailAttempt = -1; // we stop attemping on this merge length
-                    } else {
-                        tailAttempt = i + 1; // 0 - means no tail has been merged
-                        // i is 0 based
-                    }
-                }
-            }
-            tailMerge = Integer.max(tailMerge, tailAttempt);
-        }
-        return body + added.substring(tailMerge);
-    }
-
-    public boolean showOutput = false;
-    private void print(String format, Object ... args) {
-        if (!showOutput) return;
-        System.out.print(String.format(format, args));
-    }
-}
