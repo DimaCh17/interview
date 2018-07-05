@@ -133,21 +133,12 @@ public class MaxNeighbor {
 				remove.at(row - 1, col - 1);
 				remove.at(row, col - 2);
 				remove.at(row + 1, col - 1);
-				res[row][col] = count.getMax();
-				if (col == cols - 1) {
-					direction = 1;
-					row += 1;
-				} else {
-					col += 1;
-				}
 			} else if (direction == 1) { // vertical, on the right
 				add.at(row, col - 1);
 				add.at(row + 1, col);
 				remove.at(row - 2, col);
 				remove.at(row - 1, col - 1);
-				direction = 2;
-				res[row][col] = count.getMax();
-				col -= 1;
+				
 			} else if (direction == 2) { // going left
 				add.at(row - 1, col);
 				add.at(row, col - 1);
@@ -155,24 +146,41 @@ public class MaxNeighbor {
 				remove.at(row - 1, col + 1);
 				remove.at(row, col + 2);
 				remove.at(row + 1, col + 1);
-				res[row][col] = count.getMax();
+			} else if (direction == 3) {// on the left, going down
+				add.at(row, col + 1);
+				add.at(row + 1, col);
+				remove.at(row - 2, col);
+				remove.at(row - 1, col + 1);
+			}
+			res[row][col] = count.getMax();
+			switch (direction) {
+			case 0:
+				if (col == cols - 1) {
+					direction = 1;
+					row += 1;
+				} else {
+					col += 1;
+				}
+				break;
+			case 1:
+				direction = 2;
+				col -= 1;
+				break;
+			case 2:
 				if (col == 0) {
 					direction = 3;
 					row += 1;
 				} else {
 					col -= 1;
 				}
-			} else if (direction == 3) {// on the left, going down
-				add.at(row, col + 1);
-				add.at(row + 1, col);
-				remove.at(row - 2, col);
-				remove.at(row - 1, col + 1);
+			break;
+			case 3:
 				direction = 0;
-				res[row][col] = count.getMax();
 				col += 1;
+			break;
 			}
-			
 		}
+	
 		ArrayList<ArrayList<Integer>> out = new ArrayList<ArrayList<Integer>>();
 		for (row = 0; row < rows; row++) {
 			ArrayList<Integer> line = new ArrayList<Integer>();
