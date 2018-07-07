@@ -55,7 +55,6 @@ keep a copy of the matrix to store max, thus they don't interact with the origin
 */
 
 public class MaxNeighbor {
-	private int count = 0;
 	private int[][] matrix;
 	private int[][] res;
 	private CacheEntry[][] cache;
@@ -116,31 +115,31 @@ public class MaxNeighbor {
 		if (input.size() == 0 || input.get(0).size() == 0) {
 			return new ArrayList<>();
 		}
-		final int rows = input.size();
-		final int cols = input.get(0).size();
+		final int ROWS = input.size();
+		final int COLS = input.get(0).size();
 		
-		matrix = new int[rows][cols];
-		res = new int[rows][cols];
-		cache = new CacheEntry[rows][cols];
-		for (int row = 0; row < rows; row++) {
-			for (int col = 0; col < cols; col++) {
+		matrix = new int[ROWS][COLS];
+		res = new int[ROWS][COLS];
+		cache = new CacheEntry[ROWS][COLS];
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
 				matrix[row][col] = input.get(row).get(col);
 				res[row][col] = Integer.MIN_VALUE;
 			}
 		}
 		
-		for (int row = 0; row < rows; row++) {
-			for (int col = 0; col < cols; col++) {
-				paintWith(matrix[row][col], row, col, k, row * cols);
-				res[row][col] = getColor(matrix[row][col], row, cols, k);
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
+				paintWith(matrix[row][col], row, col, k, row * COLS + col);
+				res[row][col] = getColor(matrix[row][col], row, col, k);
 			}
 		}
 	
 		ArrayList<ArrayList<Integer>> out = new ArrayList<ArrayList<Integer>>();
-		for (int row = 0; row < rows; row++) {
+		for (int row = 0; row < ROWS; row++) {
 			ArrayList<Integer> line = new ArrayList<Integer>();
 			out.add(line);
-			for (int col = 0; col < cols; col++) {
+			for (int col = 0; col < COLS; col++) {
 				line.add(res[row][col]);
 			}
 		}
