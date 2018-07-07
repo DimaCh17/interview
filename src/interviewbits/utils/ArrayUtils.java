@@ -9,7 +9,23 @@ public class ArrayUtils {
     public static <T> ArrayList<T> create(T ... input) {
         return new ArrayList<T>(Arrays.asList(input));
     }
-    
+    public static ArrayList<ArrayList<Integer>> parseMatrix(String input) {
+    	ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
+    	input = input.trim();
+    	input = input.substring(1, input.length() - 1); // skip the brackets
+    	String[] lines = input.split("\\],\\[");
+    	for (String line : lines) {
+    		ArrayList<Integer> list = new ArrayList<Integer>();
+    		res.add(list);
+    		line = line.replace("[","");
+    		line = line.replace("]","");
+    		String[] values = line.split(",");
+    		for (String value : values) {
+    			list.add(Integer.parseInt(value));
+    		}
+    	}
+    	return res;
+    }
     public static <T> ArrayList<ArrayList<T>> createMatrix(int cols,
     		@SuppressWarnings("unchecked") T ... input) {
     	ArrayList<ArrayList<T>> res = new ArrayList<ArrayList<T>>();
