@@ -25,10 +25,14 @@ public class MaxNeighborTest {
 	@Test
 	public void testk1() {
 		assertEquals("[[4,5,8],[5,8,8]]",
-				ArrayUtils.printMatrix(mn.solve(2, ArrayUtils.createMatrix(
+				ArrayUtils.printMatrix(mn.solve(1, ArrayUtils.parseMatrix(
+					  "[1,2,4],[4,5,8]")))
+				/*
+				ArrayUtils.printMatrix(mn.solve(1, ArrayUtils.createMatrix(
 				3,
 				1,2,4,
-				4,5,8))));
+				4,5,8)))
+				*/);
 	}
 
 }

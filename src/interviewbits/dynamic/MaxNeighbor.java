@@ -55,145 +55,95 @@ keep a copy of the matrix to store max, thus they don't interact with the origin
 */
 
 public class MaxNeighbor {
-	private class CountMap {
-		private TreeMap<Integer, Integer> map = new TreeMap<>();
-		private int count = 0;
-		
-		@Override
-		public String toString() {
-			return map.keySet().toString();
-		}
-
-		public void add(int key) {
-			map.put(key, map.getOrDefault(key, 0) + 1);
-			count++;
-		}
-		public int getMax() {
-			return map.lastKey();
-		}
-
-		public void remove(int key) {
-			Integer oldValue = map.get(key);
-			Objects.requireNonNull(oldValue);
-			if (oldValue == 1) {
-				map.remove(key);
-			} else {
-				map.put(key, oldValue + 1);
-			}
-			count--;
-		}
-		
-		public int size() {
-			return count;
-		}
-	}
-
-	@FunctionalInterface
-	private interface ChangeCell {
-		void at(int row, int col);
+	private int count = 0;
+	private int[][] matrix;
+	private int[][] res;
+	private CacheEntry[][] cache;
+	
+	private class CacheEntry {
+		public int ts;
+		public int distance;
 	}
 	
+
+	private boolean outside(int row, int col, int distance) {
+		if (distance < 0 || row < 0 || col < 0 || col >= matrix[0].length) {
+			// never go outside of the matrix
+			return true;
+		}
+		return false;
+	}
+
+	public void paintWith(int color, int row, int col, int distance, int ts) {
+		if (outside(row, col, distance)) {
+			// never go outside of the matrix
+			return;
+		}
+		if (cache[row][col] != null && cache[row][col].ts == ts
+				&& cache[row][col].distance >= distance) {
+			return;
+		}
+		res[row][col] = Integer.max(color, res[row][col]);
+		cache[row][col] = new CacheEntry();
+		cache[row][col].ts = ts;
+		cache[row][col].distance = distance;
+		
+		paintWith(color, row - 1, col, distance - 1, ts);
+		paintWith(color, row, col - 1, distance - 1, ts);
+		paintWith(color, row, col + 1, distance - 1, ts);
+	}
+
+	public int getColor(int color, int row, int col, int distance) {
+		if (outside(row, col, distance)) {
+			// never go outside of the matrix
+			return color;
+		}
+		if (matrix[row][col] == Integer.MIN_VALUE) {
+			return color;// if we never explored this area
+			// don't do it, otherwise it will be a lot of false requests.
+		}
+		color = Integer.max(color, matrix[row][col]);
+		if (distance > 0) {
+			color = Integer.max(color, getColor(color, row - 1, col, distance - 1));
+			color = Integer.max(color, getColor(color, row, col - 1, distance - 1));
+			color = Integer.max(color, getColor(color, row, col + 1, distance - 1));
+			// TODO: use a queue instead of recurrent calls
+		}
+		return color;
+	}
 	public ArrayList<ArrayList<Integer>> solve(int k, ArrayList<ArrayList<Integer>> input) {
-		CountMap count = new CountMap();
+		
 		if (input.size() == 0 || input.get(0).size() == 0) {
 			return new ArrayList<>();
 		}
 		final int rows = input.size();
 		final int cols = input.get(0).size();
-		java.util.function.BiFunction<Integer, Integer, Boolean> inRange =
-			(r, c) -> c >= 0 && c < cols && r >= 0 && r < rows;
-		int[][] data = new int[rows][cols];
-		int[][] res = new int[rows][cols];
+		
+		matrix = new int[rows][cols];
+		res = new int[rows][cols];
+		cache = new CacheEntry[rows][cols];
 		for (int row = 0; row < rows; row++) {
 			for (int col = 0; col < cols; col++) {
-				data[row][col] = input.get(row).get(col);
+				matrix[row][col] = input.get(row).get(col);
 				res[row][col] = Integer.MIN_VALUE;
 			}
 		}
-		ChangeCell remove = (r, c) -> {
-			if (inRange.apply(r, c)) {
-				count.remove(get(r, c, data));
-			}
-		};
-		ChangeCell add = (r, c) -> {
-			if (inRange.apply(r, c)) {
-				count.add(get(r, c, data));
-			}
-		};
-		// init the first position
-		int direction = 0;// 0 - left, 1 - down
-		add.at(0, 0);
-		int row = 0;
-		int col = 0;
-		while (row < rows && col < cols) {
-			if (direction == 0) {
-				add.at(row - 1, col);
-				add.at(row, col + 1);
-				add.at(row + 1, col);
-				remove.at(row - 1, col - 1);
-				remove.at(row, col - 2);
-				remove.at(row + 1, col - 1);
-			} else if (direction == 1) { // vertical, on the right
-				add.at(row, col - 1);
-				add.at(row + 1, col);
-				remove.at(row - 2, col);
-				remove.at(row - 1, col - 1);
-				
-			} else if (direction == 2) { // going left
-				add.at(row - 1, col);
-				add.at(row, col - 1);
-				add.at(row + 1, col);
-				remove.at(row - 1, col + 1);
-				remove.at(row, col + 2);
-				remove.at(row + 1, col + 1);
-			} else if (direction == 3) {// on the left, going down
-				add.at(row, col + 1);
-				add.at(row + 1, col);
-				remove.at(row - 2, col);
-				remove.at(row - 1, col + 1);
-			}
-			res[row][col] = count.getMax();
-			switch (direction) {
-			case 0:
-				if (col == cols - 1) {
-					direction = 1;
-					row += 1;
-				} else {
-					col += 1;
-				}
-				break;
-			case 1:
-				direction = 2;
-				col -= 1;
-				break;
-			case 2:
-				if (col == 0) {
-					direction = 3;
-					row += 1;
-				} else {
-					col -= 1;
-				}
-			break;
-			case 3:
-				direction = 0;
-				col += 1;
-			break;
+		
+		for (int row = 0; row < rows; row++) {
+			for (int col = 0; col < cols; col++) {
+				paintWith(matrix[row][col], row, col, k, row * cols);
+				res[row][col] = getColor(matrix[row][col], row, cols, k);
 			}
 		}
 	
 		ArrayList<ArrayList<Integer>> out = new ArrayList<ArrayList<Integer>>();
-		for (row = 0; row < rows; row++) {
+		for (int row = 0; row < rows; row++) {
 			ArrayList<Integer> line = new ArrayList<Integer>();
 			out.add(line);
-			for (col = 0; col < cols; col++) {
+			for (int col = 0; col < cols; col++) {
 				line.add(res[row][col]);
 			}
 		}
 		return out;
     }
-	
-	private static int get(int row, int col, int[][] data) {
-		return data[row][col];
-	}
-
 }
