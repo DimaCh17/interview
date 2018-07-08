@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.StringJoiner;
 
+import javax.sound.sampled.Line;
+
 public class ArrayUtils {
     public static <T> ArrayList<T> create(T ... input) {
         return new ArrayList<T>(Arrays.asList(input));
@@ -12,6 +14,7 @@ public class ArrayUtils {
     public static ArrayList<ArrayList<Integer>> parseMatrix(String input) {
     	ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
     	input = input.trim();
+    	input = input.replace(" ", "");
     	input = input.substring(1, input.length() - 1); // skip the brackets
     	String[] lines = input.split("\\],\\[");
     	for (String line : lines) {

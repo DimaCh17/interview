@@ -1,9 +1,6 @@
 package interviewbits.dynamic;
 
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.TreeMap;
-
 /*
 Given a matrix M of size nxm and an integer K, find the maximum element in the K manhattan distance neighbourhood for all elements in nxm matrix.
 In other words, for every element M[i][j] find the maximum element M[p][q] such that abs(i-p)+abs(j-q) <= K.
@@ -57,92 +54,75 @@ keep a copy of the matrix to store max, thus they don't interact with the origin
 public class MaxNeighbor {
 	private int[][] matrix;
 	private int[][] res;
-	private CacheEntry[][] cache;
-	
-	private class CacheEntry {
-		public int ts;
-		public int distance;
-	}
-	
+	int ROWS;
+	int COLS;
+	int direct = 0;
 
-	private boolean outside(int row, int col, int distance) {
-		if (distance < 0 || row < 0 || col < 0 || col >= matrix[0].length) {
+	private boolean outside(int row, int col) {
+		if (row < 0 || col < 0 || col >= COLS || row >= ROWS) {
 			// never go outside of the matrix
 			return true;
 		}
 		return false;
 	}
 
-	public void paintWith(int color, int row, int col, int distance, int ts) {
-		if (outside(row, col, distance)) {
-			// never go outside of the matrix
-			return;
-		}
-		if (cache[row][col] != null && cache[row][col].ts == ts
-				&& cache[row][col].distance >= distance) {
-			return;
-		}
-		res[row][col] = Integer.max(color, res[row][col]);
-		cache[row][col] = new CacheEntry();
-		cache[row][col].ts = ts;
-		cache[row][col].distance = distance;
-		
-		paintWith(color, row - 1, col, distance - 1, ts);
-		paintWith(color, row, col - 1, distance - 1, ts);
-		paintWith(color, row, col + 1, distance - 1, ts);
-	}
 
-	public int getColor(int color, int row, int col, int distance) {
-		if (outside(row, col, distance)) {
+	public int getColor(int[][] data, int color, int row, int col) {
+		if (outside(row, col)) {
 			// never go outside of the matrix
 			return color;
 		}
-		if (matrix[row][col] == Integer.MIN_VALUE) {
-			return color;// if we never explored this area
-			// don't do it, otherwise it will be a lot of false requests.
-		}
-		color = Integer.max(color, matrix[row][col]);
-		if (distance > 0) {
-			color = Integer.max(color, getColor(color, row - 1, col, distance - 1));
-			color = Integer.max(color, getColor(color, row, col - 1, distance - 1));
-			color = Integer.max(color, getColor(color, row, col + 1, distance - 1));
-			// TODO: use a queue instead of recurrent calls
-		}
+		color = data[row][col];
 		return color;
 	}
+
 	public ArrayList<ArrayList<Integer>> solve(int k, ArrayList<ArrayList<Integer>> input) {
-		
 		if (input.size() == 0 || input.get(0).size() == 0) {
 			return new ArrayList<>();
 		}
-		final int ROWS = input.size();
-		final int COLS = input.get(0).size();
-		
+		ROWS = input.size();
+		COLS = input.get(0).size();
+		direct = 0;
 		matrix = new int[ROWS][COLS];
 		res = new int[ROWS][COLS];
-		cache = new CacheEntry[ROWS][COLS];
 		for (int row = 0; row < ROWS; row++) {
 			for (int col = 0; col < COLS; col++) {
 				matrix[row][col] = input.get(row).get(col);
-				res[row][col] = Integer.MIN_VALUE;
+				res[row][col] = matrix[row][col];
 			}
 		}
 		
-		for (int row = 0; row < ROWS; row++) {
-			for (int col = 0; col < COLS; col++) {
-				paintWith(matrix[row][col], row, col, k, row * COLS + col);
-				res[row][col] = getColor(matrix[row][col], row, col, k);
-			}
+		
+		for (int gen = 1; gen <= k; gen++) {
+			increase(input);
+			direct += 1;
+			direct %= 2;
 		}
-	
+		
+		int[][] outdir = direct == 1 ? res : matrix;
+		
 		ArrayList<ArrayList<Integer>> out = new ArrayList<ArrayList<Integer>>();
 		for (int row = 0; row < ROWS; row++) {
 			ArrayList<Integer> line = new ArrayList<Integer>();
 			out.add(line);
 			for (int col = 0; col < COLS; col++) {
-				line.add(res[row][col]);
+				line.add(outdir[row][col]);
 			}
 		}
 		return out;
+	}
+	
+	public void increase(ArrayList<ArrayList<Integer>> input) {
+		int[][] was = direct == 0 ? matrix : res;
+		int[][] now = (was == matrix) ? res : matrix;
+		for (int row = 0; row < ROWS; row++) {
+			for (int col = 0; col < COLS; col++) {
+				now[row][col] = was[row][col];
+				now[row][col] = Integer.max(now[row][col], getColor(was, now[row][col], row - 1, col));
+				now[row][col] = Integer.max(now[row][col], getColor(was, now[row][col], row + 1, col));
+				now[row][col] = Integer.max(now[row][col], getColor(was, now[row][col], row, col - 1));
+				now[row][col] = Integer.max(now[row][col], getColor(was, now[row][col], row, col + 1));
+			}
+		}
     }
 }
