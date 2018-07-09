@@ -10,9 +10,10 @@ public class CoinsInLine {
         if (!showOutput) return;
         System.out.print(String.format(format, args));
     }
-    
+    private Integer[][][] cache;
 	public int maxcoin(ArrayList<Integer> input) {
 		this.input = input;
+		cache = new Integer[input.size()][input.size()][2];
 		return makeChoice(0, input.size() - 1, 0);
     }
 
@@ -20,22 +21,28 @@ public class CoinsInLine {
 		return input.get(index);
 	}
 
-	private int makeChoice(int from, int to, int opponent) {
-		boolean me = opponent == 0;
-		if (to - from == 1) {
-			return Math.max(get(from), get(to));
+	// this one is cacheable, no need to make the same decision again and again.
+	private int makeChoice(int from, int to, int opp) {
+		if (from > to) {
+			return 0; // (TERM1)
 		}
-
-		int nextPlayer = (opponent + 1) % 2;
+		if (cache[from][to][opp] != null) {
+			return cache[from][to][opp];
+		}
+		boolean me = opp == 0;
+		int nextPlayer = (opp + 1) % 2;
+		int res;
 		if (me) {
 			// choice one
 			int choiceOne = get(from) + makeChoice(from + 1, to, nextPlayer);
 			int choiceTwo = get(to) + makeChoice(from, to - 1, nextPlayer);
-			return Math.max(choiceOne, choiceTwo);
+			res = Math.max(choiceOne, choiceTwo);
 		} else {
 			int choiceOne = makeChoice(from + 1, to, nextPlayer);
 			int choiceTwo = makeChoice(from, to - 1, nextPlayer);
-			return Math.min(choiceOne, choiceTwo);
+			res = Math.min(choiceOne, choiceTwo);
 		}
+		cache[from][to][opp] = res;
+		return res;
 	}
 }
