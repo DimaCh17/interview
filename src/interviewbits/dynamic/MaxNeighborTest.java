@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 
 import interviewbits.utils.ArrayUtils;
@@ -39,6 +40,10 @@ public class MaxNeighborTest {
 
 	@Test
 	public void testLong20() throws Exception {
+		Files.write(getPath("dp_neighbor_expected.txt"),
+				normalize(mn.solve(20,
+			ArrayUtils.parseMatrix(getData("dp_neighbor.txt"))).toString()).getBytes(),
+			StandardOpenOption.CREATE);
 		assertEquals(normalize(getData("dp_neighbor_expected.txt")),
 			ArrayUtils.printMatrix(mn.solve(20,
 				ArrayUtils.parseMatrix(
@@ -48,10 +53,13 @@ public class MaxNeighborTest {
 	private String normalize(String input) {
 		return ArrayUtils.printMatrix(ArrayUtils.parseMatrix(input));
 	}
-	private String getData(String fileName) throws IOException {
-		Path p = Paths.get(System.getenv("HOME") + File.separator +
+	
+	private Path getPath(String fileName) throws IOException {
+		return Paths.get(System.getenv("HOME") + File.separator +
 				"Documents/workspace/interview/data" + File.separator +
 				fileName);
-		return Arrays.toString(Files.readAllBytes(p));
+	}
+	private String getData(String fileName) throws IOException {
+		return Arrays.toString(Files.readAllBytes(getPath(fileName)));
 	}
 }
