@@ -31,23 +31,32 @@ public class EvaluateTrue {
     		for (; j < n; i++, j++) {
     			T[i][j] = 0;
     			for (int g = 0; g < gap; g++) {
-    				int k = i + g;
-    				int tik = T[i][k] + F[i][k]; // total count of ways
-    				int tkj = T[k+1][j] + F[k+1][j];
+    				//int k = i + g;
+    				int operIdx = i + g;
+    				int nextCol = i + g;
+    				int nextRow = i + g + 1;
+    				// k is bigger than i;
+    				int tik = T[i][nextCol] + F[i][nextCol]; // total count of ways
+    				int tkj = T[nextRow][j] + F[nextRow][j];
     				
-    				if (oper[k]=='&') {
-    					T[i][j] += T[i][k]*T[k+1][j];
-    					F[i][j] += (tik*tkj - T[i][k]*T[k+1][j]);
+    				// entry for each step: 
+    				// [i][k]
+    				// [k+1][j]
+    				
+    			
+    				if (oper[operIdx]=='&') {
+    					T[i][j] += T[i][nextCol]*T[nextRow][j];
+    					F[i][j] += (tik*tkj - T[i][nextCol]*T[nextRow][j]);
     				}
-    				if (oper[k] == '|')
+    				if (oper[operIdx] == '|')
                     {
-                        F[i][j] += F[i][k]*F[k+1][j];
-                        T[i][j] += (tik*tkj - F[i][k]*F[k+1][j]);
+                        F[i][j] += F[i][nextCol]*F[nextRow][j];
+                        T[i][j] += (tik*tkj - F[i][nextCol]*F[nextRow][j]);
                     }
-                    if (oper[k] == '^')
+                    if (oper[operIdx] == '^')
                     {
-                        T[i][j] += F[i][k]*T[k+1][j] + T[i][k]*F[k+1][j];
-                        F[i][j] += T[i][k]*T[k+1][j] + F[i][k]*F[k+1][j];
+                        T[i][j] += F[i][nextCol]*T[nextRow][j] + T[i][nextCol]*F[nextRow][j];
+                        F[i][j] += T[i][nextCol]*T[nextRow][j] + F[i][nextCol]*F[nextRow][j];
                     }
     			}
     		}
