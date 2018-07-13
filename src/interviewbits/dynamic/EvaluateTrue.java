@@ -39,19 +39,20 @@ public class EvaluateTrue {
     				// k is bigger than i;
     				int totalRight = T[row][colRight] + F[row][colRight]; // total count of ways
     				int totalBelow = T[rowBelow][col] + F[rowBelow][col];
+    				char func = oper[operIdx];
     			
-    				if (oper[operIdx]=='&') {
+    				if (func == '&') {
     					T[row][col] += T[row][colRight] * T[rowBelow][col];
     					F[row][col] += (totalRight * totalBelow
     							- T[row][colRight] * T[rowBelow][col]);
     				}
-    				if (oper[operIdx] == '|')
-                    {
+    				
+    				if (func == '|') {
                         F[row][col] += F[row][colRight] * F[rowBelow][col];
                         T[row][col] += (totalRight * totalBelow
                         		- F[row][colRight] * F[rowBelow][col]);
                     }
-                    if (oper[operIdx] == '^')
+                    if (func == '^')
                     {
                         T[row][col] += F[row][colRight] * T[rowBelow][col]
                         	+ T[row][colRight] * F[rowBelow][col];
