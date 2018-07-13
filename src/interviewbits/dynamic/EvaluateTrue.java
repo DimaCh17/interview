@@ -27,36 +27,36 @@ public class EvaluateTrue {
     	}
     	
     	for (int gap = 1; gap < n; gap++) {
-    		int j = gap, i = 0;
-    		for (; j < n; i++, j++) {
-    			T[i][j] = 0;
+    		int col = gap;// i = 0;
+    		int row = 0;
+    		for (; col < n; row++, col++) {
+    			T[row][col] = 0;
     			for (int g = 0; g < gap; g++) {
     				//int k = i + g;
-    				int operIdx = i + g;
-    				int nextCol = i + g;
-    				int nextRow = i + g + 1;
+    				int operIdx = row + g;
+    				int colRight = row + g;
+    				int rowBelow = row + g + 1;
     				// k is bigger than i;
-    				int tik = T[i][nextCol] + F[i][nextCol]; // total count of ways
-    				int tkj = T[nextRow][j] + F[nextRow][j];
-    				
-    				// entry for each step: 
-    				// [i][k]
-    				// [k+1][j]
-    				
+    				int totalRight = T[row][colRight] + F[row][colRight]; // total count of ways
+    				int totalBelow = T[rowBelow][col] + F[rowBelow][col];
     			
     				if (oper[operIdx]=='&') {
-    					T[i][j] += T[i][nextCol]*T[nextRow][j];
-    					F[i][j] += (tik*tkj - T[i][nextCol]*T[nextRow][j]);
+    					T[row][col] += T[row][colRight] * T[rowBelow][col];
+    					F[row][col] += (totalRight * totalBelow
+    							- T[row][colRight] * T[rowBelow][col]);
     				}
     				if (oper[operIdx] == '|')
                     {
-                        F[i][j] += F[i][nextCol]*F[nextRow][j];
-                        T[i][j] += (tik*tkj - F[i][nextCol]*F[nextRow][j]);
+                        F[row][col] += F[row][colRight] * F[rowBelow][col];
+                        T[row][col] += (totalRight * totalBelow
+                        		- F[row][colRight] * F[rowBelow][col]);
                     }
                     if (oper[operIdx] == '^')
                     {
-                        T[i][j] += F[i][nextCol]*T[nextRow][j] + T[i][nextCol]*F[nextRow][j];
-                        F[i][j] += T[i][nextCol]*T[nextRow][j] + F[i][nextCol]*F[nextRow][j];
+                        T[row][col] += F[row][colRight] * T[rowBelow][col]
+                        	+ T[row][colRight] * F[rowBelow][col];
+                        F[row][col] += T[row][colRight] * T[rowBelow][col]
+                        	+ F[row][colRight] * F[rowBelow][col];
                     }
     			}
     		}
