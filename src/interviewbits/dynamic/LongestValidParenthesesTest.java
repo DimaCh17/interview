@@ -27,4 +27,22 @@ public class LongestValidParenthesesTest {
 	public void test5() {
 		assertEquals(4, lvp.longestValidParentheses("(()()("));
 	}
+	
+	@Test
+	public void test6() {
+		assertEquals(4, lvp.longestValidParentheses("(())((()"));
+	}
+	
+	@Test
+	public void test7() {
+		assertEquals(4, lvp.longestValidParentheses("(()()("));
+	}
+	
+
+	@Test
+	public void test30	() {
+		lvp.showOutput = true;
+		assertEquals(30,
+			lvp.longestValidParentheses(")()))(())((())))))())()(((((())())((()())(())((((())))())((()()))(()(((()()(()((()()))(())()))((("));
+	}
 }
