@@ -31,18 +31,19 @@ public class EvaluateTrue {
     		int row = 0;
     		for (; col < n; row++, col++) {
     			T[row][col] = 0;
-    			for (int g = 0; g < gap; g++) {
+    			for (int g = 0; g < gap; g++) {// find where the extra cycle can be eliminated
+    				// and understand better what it actually dowsn 
     				//int k = i + g;
     				int operIdx = row + g;
     				int colRight = row + g;
     				int rowBelow = row + g + 1;
     				// k is bigger than i;
-    				int totalRight = T[row][colRight] + F[row][colRight]; // total count of ways
-    				int totalBelow = T[rowBelow][col] + F[rowBelow][col];
+    				int totalRight = (T[row][colRight] + F[row][colRight]) % 1003; // total count of ways
+    				int totalBelow = (T[rowBelow][col] + F[rowBelow][col]) % 1003;
     				char func = oper[operIdx];
-    			
     				if (func == '&') {
     					T[row][col] += T[row][colRight] * T[rowBelow][col];
+    					
     					F[row][col] += (totalRight * totalBelow
     							- T[row][colRight] * T[rowBelow][col]);
     				}
@@ -52,16 +53,17 @@ public class EvaluateTrue {
                         T[row][col] += (totalRight * totalBelow
                         		- F[row][colRight] * F[rowBelow][col]);
                     }
-                    if (func == '^')
-                    {
+                    if (func == '^') {
                         T[row][col] += F[row][colRight] * T[rowBelow][col]
                         	+ T[row][colRight] * F[rowBelow][col];
                         F[row][col] += T[row][colRight] * T[rowBelow][col]
                         	+ F[row][colRight] * F[rowBelow][col];
                     }
+                    T[row][col] %= 1003;
+                    F[row][col] %= 1003;
     			}
     		}
     	}
-    	return T[0][n-1];
+    	return T[0][n-1] % 1003;
     }
 }
