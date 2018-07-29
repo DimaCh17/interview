@@ -19,42 +19,45 @@ You may not engage in multiple transactions at the same time (ie, you must sell 
 ((5) go from bottom to top. for each cell with the same sell price (col) find the max
     of a sum of this value and the previous sell price (use the buy price from the last sell
     as it defines the row, then decrement it to get the previous sell price)
-((CC) don't croww boundaries, as in an example when the buy price is the 0 indexed
+((CC) don't cross boundaries, as in an example when the buy price is the 0 indexed
 */
 public class BestStockPrice3 {
 	public int maxProfit(final List<Integer> input) {
 		return dp(input);
     }
+
 	private int dp(final List<Integer> input) {
 		int n = input.size();
-		int[] max_profits = new int[n]; // get a cache or max profits
-		int max_profit  = 0;
-		int[] sell_window = new int[n]; // UEC
-		for (int sell_idx = 1; sell_idx < n; sell_idx++) {
-			for (int buy_idx = 0; buy_idx < sell_idx; buy_idx++) {
-				int profit = input.get(sell_idx) - input.get(buy_idx);
-				sell_window[buy_idx] = Integer.max(profit,  sell_window[buy_idx]); // LL - use the result of 
+		int[] maxProfits = new int[n]; // get a cache or max profits
+		int maxProfit  = 0;
+		int[] sellWindow = new int[n]; // UEC
+		for (int sellIdx = 1; sellIdx < n; sellIdx++) {
+			for (int buyIdx = 0; buyIdx < sellIdx; buyIdx++) {
+				int profit = input.get(sellIdx) - input.get(buyIdx);
+				sellWindow[buyIdx] = Integer.max(profit,  sellWindow[buyIdx]);
+				// LL - use the result of 
 				// the operation, but not the input
-				max_profits[sell_idx] = Integer.max(sell_window[buy_idx],  max_profits[sell_idx]);
+				maxProfits[sellIdx] = Integer.max(sellWindow[buyIdx],
+					maxProfits[sellIdx]);
 			}
-			for (int buy_idx = n - 1; buy_idx >= 0; buy_idx--) {
-				int pair_profit = 0;
-				int fist_profit = sell_window[buy_idx];
+			for (int buyIdx = n - 1; buyIdx >= 0; buyIdx--) {
+				int pairProfit = 0;
+				int fistProfit = sellWindow[buyIdx];
 				// simple, as the it's should be a rolling profit
 				// that may use a maximum from a previous day
 				// rather than replying on the current profit
 				// i.e. - the sale may have happened before
 				// than the sell day
-				int second_profit = 0;
-				if (buy_idx > 0) {
-					second_profit = max_profits[buy_idx - 1];
+				int secondProfit = 0;
+				if (buyIdx > 0) {
+					secondProfit = maxProfits[buyIdx - 1];
 				}
-				pair_profit = fist_profit + second_profit;
-				if (pair_profit > max_profit) {
-					max_profit = pair_profit;
+				pairProfit = fistProfit + secondProfit;
+				if (pairProfit > maxProfit) {
+					maxProfit = pairProfit;
 				}
 			}
 		}
-		return max_profit;
-	}
+		return maxProfit;
+	}	
 }
