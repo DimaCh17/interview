@@ -42,7 +42,7 @@ public class BestStockPrice3 {
 			}
 			for (int buyIdx = n - 1; buyIdx >= 0; buyIdx--) {
 				int pairProfit = 0;
-				int fistProfit = sellWindow[buyIdx];
+				int firstProfit = sellWindow[buyIdx];
 				// simple, as the it's should be a rolling profit
 				// that may use a maximum from a previous day
 				// rather than replying on the current profit
@@ -52,7 +52,7 @@ public class BestStockPrice3 {
 				if (buyIdx > 0) {
 					secondProfit = maxProfits[buyIdx - 1];
 				}
-				pairProfit = fistProfit + secondProfit;
+				pairProfit = firstProfit + secondProfit;
 				if (pairProfit > maxProfit) {
 					maxProfit = pairProfit;
 				}
