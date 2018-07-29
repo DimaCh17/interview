@@ -44,7 +44,7 @@ public class BestStockPrice3 {
 				int pairProfit = 0;
 				int firstProfit = sellWindow[buyIdx];
 				// simple, as the it's should be a rolling profit
-				// 
+				// !!
 				// that may use a maximum from a previous day
 				// rather than replying on the current profit
 				// i.e. - the sale may have happened before
