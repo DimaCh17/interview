@@ -51,8 +51,8 @@ public class BestStockPrice3 {
 			for (int j = n - 1; j > i; j--) {
 				int fist_profit = matrix[i][j];
 				int second_profit = 0;
-				if (j > 0) {
-					second_profit = max_profits[j - 1];
+				if (i > 0) {
+					second_profit = max_profits[i - 1];
 				}
 				pair_profit = fist_profit + second_profit;
 				if (pair_profit > max_profit) {
