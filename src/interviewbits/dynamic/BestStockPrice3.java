@@ -27,32 +27,27 @@ public class BestStockPrice3 {
     }
 	private int dp(final List<Integer> input) {
 		int n = input.size();
-		int[][] matrix = new int[n][n];
-		for (int i = 0; i < n; i++) {
-			int max_profit  = 0;
-			for (int j = i + 1; j < n; j++) {
-				int profit = input.get(j) - input.get(i);
-				if (profit > max_profit) {
-					max_profit = profit;
-				}
-				matrix[i][j] = max_profit;
+		int[] max_profits = new int[n]; // get a cache or max profits
+		int max_profit  = 0;
+		int[] sell_window = new int[n]; // UEC
+		for (int sell_idx = 1; sell_idx < n; sell_idx++) {
+			for (int buy_idx = 0; buy_idx < sell_idx; buy_idx++) {
+				int profit = input.get(sell_idx) - input.get(buy_idx);
+				sell_window[buy_idx] = Integer.max(profit,  sell_window[buy_idx]); // LL - use the result of 
+				// the operation, but not the input
+				max_profits[sell_idx] = Integer.max(sell_window[buy_idx],  max_profits[sell_idx]);
 			}
-		}
-		int[] max_profits = new int[n]; // get a cache or max profits 
-		// for a sell price
-		for (int j = 0; j < n; j++) {
-			for (int i = 0; i < j; i++) { // (??) check indexes
-				max_profits[j] = Integer.max(max_profits[j], matrix[i][j]);
-			}
-		}
-		int max_profit = 0;
-		for (int i = n - 1; i >= 0; i--) {
-			int pair_profit = 0;
-			for (int j = n - 1; j > i; j--) {
-				int fist_profit = matrix[i][j];
+			for (int buy_idx = n - 1; buy_idx >= 0; buy_idx--) {
+				int pair_profit = 0;
+				int fist_profit = sell_window[buy_idx];
+				// simple, as the it's should be a rolling profit
+				// that may use a maximum from a previous day
+				// rather than replying on the current profit
+				// i.e. - the sale may have happened before
+				// than the sell day
 				int second_profit = 0;
-				if (i > 0) {
-					second_profit = max_profits[i - 1];
+				if (buy_idx > 0) {
+					second_profit = max_profits[buy_idx - 1];
 				}
 				pair_profit = fist_profit + second_profit;
 				if (pair_profit > max_profit) {
