@@ -34,13 +34,12 @@ public class BestStockPrice3 {
 		for (int sellIdx = 1; sellIdx < n; sellIdx++) {
 			for (int buyIdx = 0; buyIdx < sellIdx; buyIdx++) {
 				int profit = input.get(sellIdx) - input.get(buyIdx);
-				sellWindow[buyIdx] = Integer.max(profit,  sellWindow[buyIdx]);
+				int bestSellPrice = Integer.max(profit,  sellWindow[buyIdx]);
+				sellWindow[buyIdx] = bestSellPrice;
 				// LL - use the result of 
 				// the operation, but not the input
-				maxProfits[sellIdx] = Integer.max(sellWindow[buyIdx],
+				maxProfits[sellIdx] = Integer.max(bestSellPrice,
 					maxProfits[sellIdx]);
-			}
-			for (int buyIdx = n - 1; buyIdx >= 0; buyIdx--) {
 				int pairProfit = 0;
 				int firstProfit = sellWindow[buyIdx];
 				// simple, as the it's should be a rolling profit
