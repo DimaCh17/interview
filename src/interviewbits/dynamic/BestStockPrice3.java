@@ -23,41 +23,48 @@ You may not engage in multiple transactions at the same time (ie, you must sell 
 */
 public class BestStockPrice3 {
 	public int maxProfit(final List<Integer> input) {
-		return dp(input);
+		return twoPass(input);
     }
-
-	private int dp(final List<Integer> input) {
-		int n = input.size();
-		int[] maxProfits = new int[n]; // get a cache or max profits
-		int maxProfit  = 0;
-		int[] sellWindow = new int[n]; // UEC
-		for (int sellIdx = 1; sellIdx < n; sellIdx++) {
-			for (int buyIdx = 0; buyIdx < sellIdx; buyIdx++) {
-				int profit = input.get(sellIdx) - input.get(buyIdx);
-				int bestSellPrice = Integer.max(profit,  sellWindow[buyIdx]);
-				sellWindow[buyIdx] = bestSellPrice;
-				// LL - use the result of 
-				// the operation, but not the input
-				maxProfits[sellIdx] = Integer.max(bestSellPrice,
-					maxProfits[sellIdx]);
-				int pairProfit = 0;
-				int firstProfit = sellWindow[buyIdx];
-				// simple, as the it's should be a rolling profit
-				// !!
-				// that may use a maximum from a previous day
-				// rather than replying on the current profit
-				// i.e. - the sale may have happened before
-				// than the sell day
-				int secondProfit = 0;
-				if (buyIdx > 0) {
-					secondProfit = maxProfits[buyIdx - 1];
-				}
-				pairProfit = firstProfit + secondProfit;
-				if (pairProfit > maxProfit) {
-					maxProfit = pairProfit;
-				}
-			}
+	
+	// got from left to right
+	//  then from right to left
+	// the idea is that at each point 
+	// we consider two parts of the sale.
+	// one is that we sell on that day
+	// another one is that we buy on that day.
+	// it should be a gap between those, otherwise
+	// it will not work
+	private int twoPass(final List<Integer> input) {
+		if (input == null || input.size() < 1) {
+			return 0;
+		}
+		final int n = input.size();
+		int[] sellList = new int[n];
+		
+		int minPrice = input.get(0);
+		for (int i = 1; i < n; i++) {
+			int curPrice = input.get(i);
+			int lastPrice = input.get(i - 1);
+			int curProfit = curPrice - minPrice;
+			// the same approach, we look at the max profit
+			// if we have only one transaction
+			sellList[i] = Math.max(sellList[i - 1], curProfit);
+			// rolling price min
+			minPrice = Math.min(minPrice, curPrice);
+		}
+		
+		int maxProfit = 0;
+		int maxPrice = input.get(n - 1);
+		int[] buyList = new int [n];// we use this list to lokup 
+		// the previous profit for selling the second stock
+		for (int i = n - 2; i >=0; i--) {
+			int curPrice = input.get(i);
+			//int profit = maxPrice - curPrice;
+			buyList[i] = Math.max(buyList[i + 1], maxPrice - curPrice);
+			// this is basically, a separate cycle
+			maxPrice = Math.max(maxPrice, curPrice);
+			maxProfit = Math.max(maxProfit, buyList[i] + sellList[i]);
 		}
 		return maxProfit;
-	}	
+	}
 }

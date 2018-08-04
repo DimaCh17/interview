@@ -2,15 +2,15 @@ package interviewbits.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.StringJoiner;
 
-import javax.sound.sampled.Line;
 
 public class ArrayUtils {
-    public static <T> ArrayList<T> create(T ... input) {
+	
+    public static <T> ArrayList<T> create(@SuppressWarnings("unchecked") T ... input) {
         return new ArrayList<T>(Arrays.asList(input));
     }
+
     public static ArrayList<ArrayList<Integer>> parseMatrix(String input) {
     	ArrayList<ArrayList<Integer>> res = new ArrayList<ArrayList<Integer>>();
     	input = input.trim();
@@ -55,5 +55,18 @@ public class ArrayUtils {
 			sj.add(lineJoiner.toString());
 		}
 		return sj.toString();
+	}
+
+	public static String printMatrixArray(int[][] input) {
+		ArrayList<ArrayList<Integer>> list =
+			new ArrayList<ArrayList<Integer>>(input.length);
+		for (int[] row : input) {
+			ArrayList<Integer> line = new ArrayList<>(row.length);
+			for (int item : row) {
+				line.add(item);
+			}
+			list.add(line);
+		}
+		return printMatrix(list);
 	}
 }
