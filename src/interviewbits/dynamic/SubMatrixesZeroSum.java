@@ -123,9 +123,7 @@ public class SubMatrixesZeroSum {
 				val <<= 32;
 				val |= pair[1];
 				if (!pairSet.contains(val)) {
-					// && pair[0] != pair[1]
 					pairSet.add(val);
-					print("put:{%d, %d}\n", pair[0], pair[1]);
 				}
 			}
 		}
@@ -138,31 +136,20 @@ public class SubMatrixesZeroSum {
 				final int bigArea = pre[r2][col];
 				int smallArea = 0;
 				if (r1 >= 1) {
-					//print(" [r1 - 1]: %3d", pre[r1 - 1][col]);
 					smallArea = pre[r1 - 1][col];
 				}
 				int area = bigArea - smallArea;
 				if (areaMap.containsKey(area)) {
 					int found = areaMap.get(area);
-					// handle multiple entries with the same area that
-					// previously got found
-					//areaMap.put(area, found + 1);
-					res += found; // (/?) how does it work with the previous
-					// line when we use found
-					//print(" ++");
+					res += found;
 				}
-				// put only the big area to the map,
-				// thus we can re-use the map on later
-				// steps, as only areas for smaller columns are there
-				// which is a DP point
-				//areaMap.put(area, areaMap.getOrDefault(area, 0) + 1);
+
 				putToCache(area, getFromCache(area, areaMap) + 1, areaMap);
 				if (area == 0) { //? do we actually need that or it produces dups?
 					res++;
 				}
 			}
 			
-			print("\n");
 		}
 		return res;
 	}
@@ -173,13 +160,5 @@ public class SubMatrixesZeroSum {
 	
 	private int getFromCache(int key, Map<Integer, Integer> cache) {
 		return cache.getOrDefault(key, 0);
-	}
-
-	public boolean showOutput = false;
-
-	private void print(String format, Object... args) {
-		if (!showOutput)
-			return;
-		System.out.print(String.format(format, args));
 	}
 }

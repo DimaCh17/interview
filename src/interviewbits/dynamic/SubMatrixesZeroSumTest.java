@@ -28,27 +28,23 @@ public class SubMatrixesZeroSumTest {
 	
 	@Test
 	public void testManyZeros() {
-		smzs.showOutput = true;
 		assertEquals(18, smzs.solve(ArrayUtils.parseMatrix(
 				"[[0,0,0],[0,0,0]]")));
 	}
 	@Test
 	public void testManyZerosRow() {
-		smzs.showOutput = true;
 		assertEquals(6, smzs.solve(ArrayUtils.parseMatrix(
 			"[[0,0,0]]")));
 	}
 	
 	@Test
 	public void testTwoZerosRow() {
-		smzs.showOutput = true;
 		assertEquals(3, smzs.solve(ArrayUtils.parseMatrix(
 			"[[0,0]]")));
 	}
 	
 	@Test
 	public void testManyZeros2() {
-		smzs.showOutput = true;
 		assertEquals(18, smzs.solve(ArrayUtils.parseMatrix(
 				"[[0,0],[0,0],[0,0]]")));
 	}
@@ -90,7 +86,6 @@ public class SubMatrixesZeroSumTest {
 		// -8 5  7
 		//3  7 -8
 		//5 -8  9
-		smzs.showOutput = true;
 		StringBuilder sb = new StringBuilder();
 		// print the matrix array.
 		String printed = ArrayUtils.printMatrixArray(smzs.getPrefixSum(
