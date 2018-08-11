@@ -146,7 +146,7 @@ public class SubMatrixesZeroSum {
 					int found = areaMap.get(area);
 					// handle multiple entries with the same area that
 					// previously got found
-					areaMap.put(area, found + 1);
+					//areaMap.put(area, found + 1);
 					res += found; // (/?) how does it work with the previous
 					// line when we use found
 					//print(" ++");
